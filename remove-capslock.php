@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Remove CapsLock
-Description: Remove uppercase text from title content and comments.
+Description: REMOVE UPPERCASE TEXT FROM TITLE CONTENT AND COMMENTS (without any change to database).
 Author: Erik
 Version: 0.0.1
 Author URI: https://codekraft.it/

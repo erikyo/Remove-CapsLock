@@ -8,16 +8,18 @@ Tested up to: 5.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-REMOVE UPPERCASE TEXT FROM TITLE CONTENT AND COMMENTS.
+REMOVE UPPERCASE TEXT FROM TITLE CONTENT AND COMMENTS (without any change to your database).
 
 == Description ==
-Remove uppercase text from title content and comments.
-You can customize the minimum amount of consecutive characters for each type of content (title, content, comments) before trigger the cleaning function on that string.
+This plugin automatically filters the content of headings, content and comments, searching and normalizing uppercase text.
+Optionally you can customize the minimum amount of consecutive characters for each type of content (title, content, comments) before trigger the cleaning function on that string.
+This plugin only changes what is displayed without affecting what is stored in the wordpress database! If you want to change permanently the website content/titles you need to modify posts
 
 == SETUP ==
-You can customize the plugin options adding to functions.php the needed filter, there are two kind of filters you can set:
+You can customize the plugin options if needed adding to functions.php the needed filters.
 
-The first is to set your own set of hook+rule:
+There are two kind of filters you can set:
+- The first is to set **your own set** of hook+rule
 `
 function my_custom_rules() {
 add_filter( 'rcl_hook_filters', function () { return array(
@@ -30,7 +32,7 @@ add_filter( 'rcl_hook_filters', function () { return array(
 add_action( 'init', 'my_custom_rules' );
 `
 
-the second one allows to edit a single filter value (anyway it doesn't create any other filter).
+- The second one allows to edit a **single filter** value (anyway it doesn't create any other filter)
 To disable the filter (while continue to use the rest of the standard set) you need to set "-1" as value
 `
 add_filter( 'rcl_the_title', function () { return 60; } );
@@ -38,9 +40,11 @@ add_filter( 'rcl_comment_text', function () { return 3; } );
 add_filter( 'rcl_widget_title', function () { return -1; } ); // disabled
 `
 
-One last note, since the main post/page content has a different content type (isn't a string) you need to set the filter as below (-1 means disabled)
+One last note, since the main post/page content has a different content type (isn't a string) **you need to set the filter for the post content as below**.
 `
 add_filter( 'rcl_the_content', function () { return 10; } );
+// OR
+// add_filter( 'rcl_the_content', function () { return -1; } ); // disabled
 `
 
 == Changelog ==
