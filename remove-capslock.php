@@ -22,26 +22,28 @@ function rcl_denoise( $string, $precision = 10 ) {
     );
 }
 
-// Return the title into a clean format
-add_filter( 'the_title', function ( $content ) {
-    $text_precision = intval(apply_filters( 'rcl_title_precision', 6 ));
-    if ($text_precision == -1) return $content;
+$rcl_available_filters = apply_filters( 'rcl_available_filters' , array(
+    array('the_title','rcl_title_precision', 6), // Return the title into a clean format
+    array('widget_title','rcl_title_precision', 6), // Return the widget normalized title
+    array('comment_text','rcl_comment_precision', 5), // Returning comments in a way that ensures a democratic conversation
+) );
 
-    return rcl_denoise( $content, $text_precision );
-} );
+foreach ( $rcl_available_filters as $filter ) {
 
-// Returning comments in a way that ensures a democratic conversation
-add_filter( 'comment_text', function ( $content ) {
-    $text_precision = intval(apply_filters( 'rcl_comment_precision', 5 ));
-    if ($text_precision == -1) return $content;
+    // get the needed precision for uppercase replace regex (-1 means no replace)
+    $text_precision = intval( apply_filters( $filter[0], intval($filter[2]) ) );
+    if ($text_precision < 0) return;
 
-    return rcl_denoise( $content, $text_precision );
-} );
+    // add the filter with the chosen options
+    add_filter( $filter[0], function ( $content ) use ( $filter ) {
+        return rcl_denoise( $content, $filter[2] );
+    } );
+}
 
 // Return the content into human readable format
 add_filter( 'the_content', function ( $content ) {
     $text_precision = intval(apply_filters( 'rcl_text_precision', 10 ));
-    if ($text_precision == -1) return $content;
+    if ($text_precision < 0) return $content;
 
     return is_main_query() ? rcl_denoise( $content, $text_precision ) : $content;
 } );
