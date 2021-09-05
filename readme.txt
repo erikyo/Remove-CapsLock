@@ -33,17 +33,17 @@ add_action( 'init', 'my_custom_rules' );
 the second one allows to edit a single filter value (anyway it doesn't create any other filter).
 To disable the filter (while continue to use the rest of the standard set) you need to set "-1" as value
 `
-add_filter( 'rcl_the_title', function () { return 60; } )
+add_filter( 'rcl_the_title', function () { return 60; } );
 add_filter( 'rcl_comment_text', function () { return 3; } );
 add_filter( 'rcl_widget_title', function () { return -1; } ); // disabled
 `
 
-One last note, since the main post/page content has a different content type (isn't a string) you need to set the filter indipendently as below (-1 means disabled)
+One last note, since the main post/page content has a different content type (isn't a string) you need to set the filter as below (-1 means disabled)
 `
-add_filter( 'rcl_the_content', function () { return 10; } )
+add_filter( 'rcl_the_content', function () { return 10; } );
 `
 
-
+== Changelog ==
 
 = 0.0.2 =
 * add filters to provide some plugin customizations

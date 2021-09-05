@@ -24,31 +24,32 @@ function rcl_denoise( $string, $regex ) {
 }
 
 function rcl_filters() {
+
+    // there are two ways to set the filters, check the docs
     $rcl_available_filters = apply_filters( 'rcl_hook_filters' , array(
-        // there are two ways to set the content filter. check the docs
-        array( 'hook' => 'the_title', 'allowed_chars' => 6 ), // Return the title into a clean format
-        array( 'hook' => 'comment_text', 'allowed_chars' => 5 ), // Returning comments in a way that ensures a democratic conversation
-        array( 'hook' => 'widget_title', 'allowed_chars' => 6 ), // Return the widget normalized title
+        array( 'hook' => 'the_title', 'allowed_chars' => 6 ), // the title into a clean format
+        array( 'hook' => 'comment_text', 'allowed_chars' => 5 ), // the single comment content
+        array( 'hook' => 'widget_title', 'allowed_chars' => 6 ), // the widget title
     ) );
 
     foreach ( $rcl_available_filters as $filter ) {
 
+        if (!has_filter($filter['hook'])) return;
+
         // get the needed precision for uppercase replace regex (-1 means no replace)
-        $text_precision = apply_filters( 'rcl_'. $filter['hook'] , $filter['allowed_chars']  ) ;
-        if ( $text_precision < 0 ) return;
+        $text_precision = intval(apply_filters( 'rcl_'. $filter['hook'] , $filter['allowed_chars']  ));
 
         // add the filter with the chosen options
-        add_filter( $filter['hook'], function ( $content ) use ( $text_precision ) {
+        if ( $text_precision ) add_filter( $filter['hook'], function ( $content ) use ( $text_precision ) {
             return rcl_denoise( $content, '/([A-Z\ ,-]{' . $text_precision . ',})/' );
         } );
     }
 
-    // Return the content into human readable format
+    // Returns human readable content
     add_filter( 'the_content', function ( $content ) {
         $text_precision = intval(apply_filters( 'rcl_the_content', 10 ));
-        if ($text_precision < 0) return $content;
 
-        return is_main_query() ? rcl_denoise( $content, '/(?<=>| )([A-Z\ ,-]{' . intval($text_precision) . ',})/' ) : $content;
+        return is_main_query() && $text_precision ? rcl_denoise( $content, '/(?<=>| )([A-Z\ ,-]{' . $text_precision . ',})/' ) : $content;
     } );
 }
 add_action( 'init', 'rcl_filters', 99 );
