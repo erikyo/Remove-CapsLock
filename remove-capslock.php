@@ -3,7 +3,7 @@
 Plugin Name: Remove CapsLock
 Description: REMOVE UPPERCASE TEXT FROM TITLE CONTENT AND COMMENTS (without any change to database).
 Author: Erik
-Version: 0.0.1
+Version: 0.1.0
 Author URI: https://codekraft.it/
 */
 
@@ -23,6 +23,9 @@ function rcl_denoise( $string, $regex ) {
     );
 }
 
+/**
+ * The Remove CapsLock plugin
+ */
 function rcl_filters() {
 
     // there are two ways to set the filters, check the docs

@@ -3,7 +3,7 @@ Contributors: codekraft
 Tags: uppercase, lowercase, text, capslock
 Requires at least: 3.0
 Requires PHP: 5.6
-Stable tag: 0.0.2
+Stable tag: 0.1.0
 Tested up to: 5.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
