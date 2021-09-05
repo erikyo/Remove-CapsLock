@@ -16,7 +16,7 @@ Author URI: https://codekraft.it/
  * @return string - the clean text
  */
 function rcl_denoise( $string, $precision = 10 ) {
-    return preg_replace_callback( '/([A-Z\ ,-]{' . intval($precision) . ',})/',
+    return preg_replace_callback( '/(?<=>| |)([A-Z\ ,-]{' . intval($precision) . ',})/',
         function ( $m ) { return ucfirst( strtolower( $m[1] ) ); },
         $string
     );
