@@ -17,10 +17,11 @@ You can customize the minimum amount of consecutive characters for each type of 
 == SETUP ==
 Enable the plugin.
 Eventually, if you don't like the settings I've made, you can change them adding to functions.php the needed filter
+To disable the filter please set "-1" as value
 
 add_filter( 'rcl_title_precision', function () {return 6;} );
 add_filter( 'rcl_comment_precision', function () {return 5;} );
-add_filter( 'rcl_text_precision', function () {return 10;} );
+add_filter( 'rcl_text_precision', function () {return -1;} ); // disabled
 
 = 0.0.1 =
 * so just for a joke I made this plugin but it might be useful for you to make fun of it too

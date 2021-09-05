@@ -16,7 +16,7 @@ Author URI: https://codekraft.it/
  * @return string - the clean text
  */
 function rcl_denoise( $string, $precision = 10 ) {
-    return preg_replace_callback( '/([A-Z\ ,-]{' . $precision . ',})/',
+    return preg_replace_callback( '/([A-Z\ ,-]{' . intval($precision) . ',})/',
         function ( $m ) { return ucfirst( strtolower( $m[1] ) ); },
         $string
     );
@@ -24,21 +24,24 @@ function rcl_denoise( $string, $precision = 10 ) {
 
 // Return the title into a clean format
 add_filter( 'the_title', function ( $content ) {
-    $text_precision = apply_filters( 'rcl_title_precision', 6 );
+    $text_precision = intval(apply_filters( 'rcl_title_precision', 6 ));
+    if ($text_precision == -1) return $content;
 
     return rcl_denoise( $content, $text_precision );
 } );
 
 // Returning comments in a way that ensures a democratic conversation
 add_filter( 'comment_text', function ( $content ) {
-    $text_precision = apply_filters( 'rcl_comment_precision', 5 );
+    $text_precision = intval(apply_filters( 'rcl_comment_precision', 5 ));
+    if ($text_precision == -1) return $content;
 
     return rcl_denoise( $content, $text_precision );
 } );
 
 // Return the content into human readable format
 add_filter( 'the_content', function ( $content ) {
-    $text_precision = apply_filters( 'rcl_text_precision', 10 );
+    $text_precision = intval(apply_filters( 'rcl_text_precision', 10 ));
+    if ($text_precision == -1) return $content;
 
     return is_main_query() ? rcl_denoise( $content, $text_precision ) : $content;
 } );
