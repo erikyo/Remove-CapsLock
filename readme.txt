@@ -19,21 +19,19 @@ This plugin only changes what is displayed without affecting what is stored in t
 You can customize the plugin options if needed adding to functions.php the needed filters.
 
 There are two kind of filters you can set:
-- The first is to set **your own set** of hook+rule
+1) **Create your own set** of hook+rule
 `
-function my_custom_rules() {
-add_filter( 'rcl_hook_filters', function () { return array(
-    // there are two ways to set the content filter. check the docs
-    array( 'hook' => 'the_title', 'allowed_chars' => 6 ), // title
-    array( 'hook' => 'comment_text', 'allowed_chars' => 5 ), // comments
-    array( 'hook' => 'widget_title', 'allowed_chars' => 6 ), // widget
-); } );
-}
-add_action( 'init', 'my_custom_rules' );
+add_action( 'init', function() {
+    add_filter( 'rcl_hook_filters', function () { return array(
+        array( 'hook' => 'the_title', 'allowed_chars' => 6 ), // title
+        array( 'hook' => 'comment_text', 'allowed_chars' => 5 ), // comments
+        array( 'hook' => 'widget_title', 'allowed_chars' => 6 ), // widget
+        );
+    } );
+} );
 `
 
-- The second one allows to edit a **single filter** value (anyway it doesn't create any other filter)
-To disable the filter (while continue to use the rest of the standard set) you need to set "-1" as value
+2) **Edit a single filter** value (it doesn't create any new filter, only change an already created one). To disable the filter (while continue to use the rest of the standard set) you need to set "-1" as value
 `
 add_filter( 'rcl_the_title', function () { return 60; } );
 add_filter( 'rcl_comment_text', function () { return 3; } );
@@ -49,11 +47,11 @@ add_filter( 'rcl_the_content', function () { return 10; } );
 
 == Changelog ==
 
-= 0.0.2 =
+= 0.1.0 =
 * add filters to provide some plugin customizations
 
 = 0.0.1 =
-* so just for a joke I made this plugin but it might be useful for you to make fun of it too
+* just for a joke I made this plugin but it might be useful to you too
 
 == Screenshot ==
 1. the plugin options (1/3)
