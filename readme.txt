@@ -8,7 +8,7 @@ Tested up to: 5.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-REMOVE UPPERCASE TEXT FROM TITLE CONTENT AND COMMENTS (without any change to your database).
+NORMALIZE ICKY UPPERCASE TEXT IN TITLES, CONTENT AND COMMENTS (without any change to your database).
 
 == Description ==
 This plugin automatically filters the content of headings, content and comments, searching and normalizing uppercase text.
@@ -16,10 +16,10 @@ Optionally you can customize the minimum amount of consecutive characters for ea
 This plugin only changes what is displayed without affecting what is stored in the wordpress database! If you want to change permanently the website content/titles you need to modify posts
 
 == SETUP ==
-You can customize the plugin options if needed adding to functions.php the needed filters.
+After installation, the plugin automatically displays normalised texts. So the title, post content, widget titles and comments will be filtered and normalised by default.
+You can customize/add/remove filters adding to functions.php the name of the hook and the number of allowed consecutive uppercase characters.
 
-There are two kind of filters you can set:
-1) **Create your own set** of hook+rule
+1) To **create your own set** of hook+rule
 `
 add_action( 'init', function() {
     add_filter( 'rcl_hook_filters', function () { return array(
@@ -31,7 +31,7 @@ add_action( 'init', function() {
 } );
 `
 
-2) **Edit a single filter** value (it doesn't create any new filter, only change an already created one). To disable the filter (while continue to use the rest of the standard set) you need to set "-1" as value
+2) To **edit a single filter** value (it doesn't create any new filter, only change an already created one). In order to disable a filter, while continue to use the rest of the standard set, you need to set "-1" as value (example below).
 `
 add_filter( 'rcl_the_title', function () { return 60; } );
 add_filter( 'rcl_comment_text', function () { return 3; } );
@@ -41,9 +41,26 @@ add_filter( 'rcl_widget_title', function () { return -1; } ); // disabled
 One last note, since the main post/page content has a different content type (isn't a string) **you need to set the filter for the post content as below**.
 `
 add_filter( 'rcl_the_content', function () { return 10; } );
-// OR
-// add_filter( 'rcl_the_content', function () { return -1; } ); // disabled
+// OR to disable the content filter
+// add_filter( 'rcl_the_content', function () { return -1; } );
 `
+
+For example, if you want change the default setup and enable uppercase text correction for comments, you need to add to functions.php the filter as below:
+`
+add_filter( 'rcl_the_content', function () { return -1; } ); // disabled
+add_action( 'init', function() {
+    add_filter( 'rcl_hook_filters', function () { return array(
+        array( 'hook' => 'comment_text', 'allowed_chars' => 2 ), // 2 or more uppercase digits triggers the text normalization
+        );
+    } );
+} );
+`
+
+== Troubleshooting ==
+
+This plugin is not intended to change the css style of your website, because you can do this easily with customizer and without any plugin.
+So before installing this plugin I suggest you try to reset the style of the title/content/widget, using the property `text-transform: inherit !important;`
+
 
 == Changelog ==
 
