@@ -11,11 +11,12 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 NORMALIZE ICKY UPPERCASE TEXT IN TITLES, CONTENT AND COMMENTS (without any change to your database).
 
 == Description ==
-This plugin automatically filters the content of headings, content and comments, searching and normalizing uppercase text.
-Optionally you can customize the minimum amount of consecutive characters for each type of content (title, content, comments) before trigger the cleaning function on that string.
-This plugin only changes what is displayed without affecting what is stored in the wordpress database! If you want to change permanently the website content/titles you need to modify posts
+This plugin automatically filters titles, content and comments, searching and normalizing uppercase text.
+You can customize the minimum amount of consecutive characters for each type of content (title, content, comments) before trigger the normalization function on that string.
+This plugin is intended to change on-the-fly what is displayed without affecting what is stored in the wordpress database! If you want to change permanently the website content/titles you need to modify posts.
+Please before install, be sure there isn't any CSS rule that force uppercase otherwise the font case will be css driven and this plugin consequently useless. Check the troubleshooting section for guidance on this if the plugin seems not to work.
 
-== SETUP ==
+== Setup ==
 After installation, the plugin automatically displays normalised texts. So the title, post content, widget titles and comments will be filtered and normalised by default.
 You can customize/add/remove filters adding to functions.php the name of the hook and the number of allowed consecutive uppercase characters.
 
@@ -45,12 +46,13 @@ add_filter( 'rcl_the_content', function () { return 10; } );
 // add_filter( 'rcl_the_content', function () { return -1; } );
 `
 
-For example, if you want change the default setup and enable uppercase text correction for comments, you need to add to functions.php the filter as below:
+If you need to change the default setup and enable uppercase text correction ONLY for comments, you need to add to functions.php the filter as below:
 `
+// functions.php
 add_filter( 'rcl_the_content', function () { return -1; } ); // disabled
 add_action( 'init', function() {
     add_filter( 'rcl_hook_filters', function () { return array(
-        array( 'hook' => 'comment_text', 'allowed_chars' => 2 ), // 2 or more uppercase digits triggers the text normalization
+        array( 'hook' => 'comment_text', 'allowed_chars' => 5 ), // 2 or more uppercase digits triggers the text normalization
         );
     } );
 } );
